@@ -21,6 +21,18 @@ module BirdrApi
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 5.1
 
+    # We will be using UUIDs for primary keys. This updates the ActiveRecord
+    # generator to specify all create_table migrations should use UUID as their
+    # primary key.
+    #
+    # For example:
+    #
+    # create_table :users, id: :uuid do |t|
+    # end
+    config.generators do |g|
+      g.orm :active_record, primary_key_type: :uuid
+    end
+
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration should go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded.
