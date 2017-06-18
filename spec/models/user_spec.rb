@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe User, type: :model do
-  let (:user) { User.new first_name: 'Matt', last_name: 'Williams', email: 'matt@williams.com' }
+  let (:user) { User.new first_name: 'Matt', last_name: 'Williams', email: 'matt@williams.com', password: 'secret' }
 
   describe "#first_name" do
     it "is required" do
@@ -55,6 +55,25 @@ RSpec.describe User, type: :model do
       user.email = mixed_case_email
       user.save
       assert_equal mixed_case_email.downcase, user.reload.email
+    end
+  end
+
+  describe '#password' do
+    it 'should be present (nonblank)' do
+      user.password = ' ' * 6
+      expect(user.valid?).to be false
+    end
+
+    it 'should have minimum length of 6' do
+      user.password = '123'
+      expect(user.valid?).to be false
+    end
+
+    it 'creates a hash on save' do
+      user.save
+      expect(user.password_digest).to_not be nil
+      expect(user.password).to_not be nil
+      expect(user.password).to_not eq(user.password_digest)
     end
   end
 end
