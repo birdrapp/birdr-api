@@ -1,6 +1,6 @@
 # Birdr API
 
-### Setup
+## Setup
 
 This API is built using Ruby on Rails (5.1). To get setup you will first need to ensure you have the latest version of Ruby installed (2.4.1+), as well as the [bundler gem](http://bundler.io/):
 
@@ -16,25 +16,61 @@ cd birdr-api
 bundle install
 ```
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+The API uses Postgres as a database. If you're on Mac you can use [Postgres.app](https://postgresapp.com/). You will need to crete a role in postgres:
 
-Things you may want to cover:
+```
+psql
+psql # CREATE ROLE birdr LOGIN SUPERUSER PASSWORD 'birdr';
+psql # \q
+```
 
-* Ruby version
+To bring the database inline with production:
 
-* System dependencies
+```
+rails db:create
+rails db:migrate
+```
 
-* Configuration
+Test everything is working:
 
-* Database creation
+```
+rails server
+```
 
-* Database initialization
+Or, run the tests:
 
-* How to run the test suite
+```
+rspec
+```
 
-* Services (job queues, cache servers, search engines, etc.)
+## API Documentation
 
-* Deployment instructions
+### Users
+#### `POST /users`
 
-* ...
+##### Example request
+```http
+POST /users HTTP/1.1
+Content-Type: application/json
+
+{
+  "first_name": "Matthew",
+  "last_name": "Williams",
+  "email": "matt@williams.com",
+  "password": "secret"
+}
+```
+
+##### Example response
+
+```http
+HTTP/1.1 201 Created
+Content-Type: application/json
+
+{
+  "id": "2397c038-fd20-11e6-a33e-784f43502296",
+  "first_name": "Matthew",
+  "last_name": "Williams",
+  "email": "matt@williams.com"
+}
+```
