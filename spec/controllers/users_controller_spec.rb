@@ -13,7 +13,6 @@ describe 'POST #create' do
 
     expect(response).to be_success
     expect(response).to have_http_status(201)
-
   end
 
   it 'returns the new user in the response' do
@@ -42,7 +41,7 @@ describe 'POST #create' do
 
   describe 'Failures' do
     it 'does not save an invalid user to the database' do
-    expect {
+      expect {
         post :create, params: invalid_user_params
       }.to_not change { User.count }
     end
