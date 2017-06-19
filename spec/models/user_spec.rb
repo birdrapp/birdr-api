@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe User, type: :model do
   describe 'validations' do
-    subject { User.new first_name: 'Matt', last_name: 'Williams', email: 'matt@williams.com', password: 'secret' }
+    subject { FactoryGirl.build(:user) }
 
     it { should validate_presence_of(:first_name) }
     it { should validate_length_of(:first_name).is_at_most(255) }
