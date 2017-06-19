@@ -1,5 +1,6 @@
-# Controller for all user actions
 class UsersController < ApplicationController
+  skip_before_action :authenticate!
+
   def create
     @user = User.new user_params
 

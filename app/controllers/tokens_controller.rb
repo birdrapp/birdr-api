@@ -1,4 +1,6 @@
 class TokensController < ApplicationController
+  skip_before_action :authenticate!
+
   def create
     user = User.find_by_email params[:email]
 
