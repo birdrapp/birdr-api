@@ -3,8 +3,8 @@ require 'rails_helper'
 RSpec.describe UsersController, type: :controller do
 
 describe 'POST #create' do
-  let (:user_params) {{ first_name: 'Matt', last_name: 'Williams', email: 'matt@williams.com', password: 'secret' }}
-  let (:invalid_user_params) {{ last_name: 'Williams', email: 'matt@williams.com', password: 'secret' }}
+  let (:user_params)         { FactoryGirl.attributes_for(:user) }
+  let (:invalid_user_params) { FactoryGirl.attributes_for(:user, :invalid_email) }
 
   it 'saves the user in the database' do
     expect {
@@ -60,7 +60,7 @@ describe 'POST #create' do
 
       body = JSON.parse(response.body)
 
-      expect(body['errors']['first_name']).to include('can\'t be blank')
+      expect(body['errors']['email']).to include('is invalid')
     end
   end
 
