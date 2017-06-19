@@ -15,6 +15,13 @@ RSpec.describe TokensController, type: :controller do
         expect(response).to have_http_status(201)
       end
 
+      it "ignores case on users password" do
+        post :create, params: { email: valid_user.email.upcase, password: valid_user.password }
+
+        expect(response).to be_success
+        expect(response).to have_http_status(201)
+      end
+
       it "returns the token ID in the response" do
         post :create, params: { email: valid_user.email, password: valid_user.password }
         newly_created_token = Token.order(:created_at).last
