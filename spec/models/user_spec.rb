@@ -1,6 +1,14 @@
 require 'rails_helper'
 
 RSpec.describe User, type: :model do
+  describe 'indexes' do
+    it { should have_db_index :email }
+  end
+
+  describe 'relationships' do
+    it { should have_many :tokens }
+  end
+
   describe 'validations' do
     subject { FactoryGirl.build(:user) }
 

@@ -74,3 +74,28 @@ Content-Type: application/json
   "email": "matt@williams.com"
 }
 ```
+
+### Authentication tokens
+#### `POST /tokens`
+
+##### Example request
+```http
+POST /tokens HTTP/1.1
+Content-Type: application/json
+
+{
+  "email": "matt@williams.com",
+  "password": "secret"
+}
+```
+
+##### Example response
+
+```http
+HTTP/1.1 201 Created
+Content-Type: application/json
+
+{
+  "token": "07630030-a00d-4d0a-a360-efccaf95a172"
+}
+```
