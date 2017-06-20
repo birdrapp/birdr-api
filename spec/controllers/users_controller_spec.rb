@@ -84,4 +84,22 @@ describe 'POST #create' do
 
 end
 
+describe 'DELETE #destroy' do
+  it 'returns a 401 for unauthenticated users' do
+    delete :destroy
+    expect(response).to have_http_status(401)
+  end
+
+  it 'deletes an authenticated user' do
+    user = FactoryGirl.create :user
+
+    sign_in_as user
+    expect {
+      delete :destroy
+    }.to change { User.count }.from(1).to(0)
+
+    expect(response).to have_http_status(204)
+  end
+end
+
 end

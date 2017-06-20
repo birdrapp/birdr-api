@@ -6,7 +6,7 @@ RSpec.describe User, type: :model do
   end
 
   describe 'relationships' do
-    it { should have_many :tokens }
+    it { should have_many(:tokens).dependent(:destroy) }
   end
 
   describe 'validations' do

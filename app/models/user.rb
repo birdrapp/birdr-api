@@ -11,5 +11,5 @@ class User < ApplicationRecord
                          uniqueness: { case_sensitive: false },
                          format: { with: /.+@.+\..+/ }
 
-  has_many :tokens
+  has_many :tokens, dependent: :destroy
 end
