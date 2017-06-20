@@ -2,6 +2,25 @@ require 'rails_helper'
 
 RSpec.describe UsersController, type: :controller do
 
+describe 'GET #show' do
+  it 'returns a 401 for unauthenticated users' do
+    get :show
+    expect(response).to have_http_status(401)
+  end
+
+  it 'returns the user object for authenticated users' do
+    user = FactoryGirl.create :user
+
+    sign_in_as user
+    get :show
+
+    expect(response).to have_http_status(200)
+    expect(json['first_name']).to eq(user['first_name'])
+    expect(json['last_name']).to eq(user['last_name'])
+    expect(json['email']).to eq(user['email'])
+  end
+end
+
 describe 'POST #create' do
   let (:user_params)         { FactoryGirl.attributes_for(:user) }
   let (:invalid_user_params) { FactoryGirl.attributes_for(:user, :invalid_email) }

@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  skip_before_action :authenticate!
+  skip_before_action :authenticate!, only: :create
 
   def create
     @user = User.new user_params
@@ -9,6 +9,10 @@ class UsersController < ApplicationController
     else
       render json: { errors: @user.errors }, status: 422
     end
+  end
+
+  def show
+    render json: current_user
   end
 
   private
