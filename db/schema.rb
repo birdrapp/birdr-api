@@ -10,11 +10,21 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170619193727) do
+ActiveRecord::Schema.define(version: 20170621155205) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
   enable_extension "pgcrypto"
+
+  create_table "birds", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "common_name", limit: 255, null: false
+    t.string "scientific_name", limit: 255, null: false
+    t.integer "sort_order", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["scientific_name"], name: "index_birds_on_scientific_name", unique: true
+    t.index ["sort_order"], name: "index_birds_on_sort_order", unique: true
+  end
 
   create_table "tokens", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "user_id"
@@ -30,6 +40,7 @@ ActiveRecord::Schema.define(version: 20170619193727) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.binary "password_digest", null: false
+    t.string "password_reset_token"
     t.index ["email"], name: "index_users_on_email", unique: true
   end
 

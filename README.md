@@ -48,6 +48,8 @@ rspec
 ### Users
 #### `POST /users`
 
+Create a new user account
+
 ##### Example request
 ```http
 POST /users HTTP/1.1
@@ -75,8 +77,78 @@ Content-Type: application/json
 }
 ```
 
+#### `GET /user`
+
+Return the user profile
+
+##### Example request
+```http
+GET /user HTTP/1.1
+Authorization: Bearer <token>
+Content-Type: application/json
+```
+
+##### Example response
+```http
+HTTP/1.1 200 OK
+Content-Type: application/json
+
+{
+  "id": "2397c038-fd20-11e6-a33e-784f43502296",
+  "first_name": "Matthew",
+  "last_name": "Williams",
+  "email": "matt@williams.com"
+}
+```
+
+#### `PATCH /user`
+
+Update user details
+
+##### Example request
+```http
+PATCH /user HTTP/1.1
+Authorization: Bearer <token>
+Content-Type: application/json
+
+{
+  "first_name": "John"
+}
+```
+
+##### Example response
+```http
+HTTP/1.1 200 OK
+Content-Type: application/json
+
+{
+  "id": "2397c038-fd20-11e6-a33e-784f43502296",
+  "first_name": "John",
+  "last_name": "Williams",
+  "email": "matt@williams.com"
+}
+```
+
+#### `DELETE /user`
+
+Delete the user account
+
+##### Example request
+```http
+DELETE /user HTTP/1.1
+Authorization: Bearer <token>
+Content-Type: application/json
+```
+
+##### Example response
+```http
+HTTP/1.1 204 No Content
+```
+
 ### Authentication tokens
 #### `POST /tokens`
+
+Request an access token
 
 ##### Example request
 ```http
@@ -99,3 +171,31 @@ Content-Type: application/json
   "token": "07630030-a00d-4d0a-a360-efccaf95a172"
 }
 ```
+
+### Birds
+#### `POST /birds`
+
+Create a new bird
+
+##### Example request
+```http
+POST /birds HTTP/1.1
+Authorization: Bearer <token>
+Content-Type: application/json
+
+{
+  "common_name": "Robin",
+  "scientific_name": "Erithacus rubecula"
+}
+```
+
+##### Example response
+```http
+HTTP/1.1 201 Created
+Content-Type: application/json
+
+{
+  "id": "07630030-a00d-4d0a-a360-efccaf95a172",
+  "common_name": "Robin",
+  "scientific_name": "Erithacus rubecula"
+}
