@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe User, type: :model do
   describe 'indexes' do
-    it { should have_db_index :email }
+    it { should have_db_index(:email).unique(true) }
   end
 
   describe 'relationships' do
@@ -33,5 +33,27 @@ RSpec.describe User, type: :model do
 
     it { should have_secure_password }
     it { should validate_length_of(:password).is_at_least(6) }
+  end
+
+  describe "class methods" do
+    describe ".find_by_token" do
+      it 'returns a user belonging to a given token' do
+        user = FactoryGirl.create :user
+        token = user.tokens.create
+
+        expect(User.find_by_token(token)).to eq user
+      end
+
+      it 'returns a user with a given token ID' do
+        user = FactoryGirl.create :user
+        token = user.tokens.create
+
+        expect(User.find_by_token(token.id)).to eq user
+      end
+
+      it 'returns nil if a user is not associated with a token' do
+        expect(User.find_by_token('nadda')).to be_nil
+      end
+    end
   end
 end
