@@ -5,14 +5,13 @@
 This API is built using Ruby on Rails (5.1). To get setup you will first need to ensure you have the latest version of Ruby installed (2.4.1+), as well as the [bundler gem](http://bundler.io/):
 
 ```bash
-brew install ruby
-gem install bundler
+brew install ruby@2.3
 ```
 
-Once installed you can install the API dependencies by running `bundle install`:
+Follow the instructions to put Ruby 2.3 in your PATH. You then need to install bundler and all the dependencies:
 
 ```bash
-cd birdr-api
+gem install bundler
 bundle install
 ```
 
