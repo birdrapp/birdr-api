@@ -19,6 +19,13 @@ RSpec.describe ApplicationController, type: :controller do
       expect(response).to have_http_status(401)
     end
 
+    it 'returns a 401 when the token has expired' do
+      token = FactoryGirl.create :token, expires_at: Time.now - 1.minute
+      request.headers.merge!({ Authorization: "Bearer #{token}"})
+      get :index
+      expect(response).to have_http_status 401
+    end
+
     it 'returns a formatted error' do
       request.headers.merge!({ Authorization: 'nope' })
       get :index

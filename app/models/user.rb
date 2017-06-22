@@ -13,8 +13,4 @@ class User < ApplicationRecord
 
   has_many :tokens, dependent: :destroy
 
-  def User.find_by_token(token)
-    token = token.id if token.respond_to?(:id)
-    User.select('users.*').joins(:tokens).find_by(tokens: { id: token })
-  end
 end
