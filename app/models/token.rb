@@ -6,6 +6,8 @@ class Token < ApplicationRecord
 
   belongs_to :user
 
+  scope :unexpired, -> { where("expires_at > ?")}
+
   def to_s
     id
   end

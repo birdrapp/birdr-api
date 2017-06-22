@@ -34,6 +34,6 @@ class UsersController < ApplicationController
   end
 
   def user_params_without_password
-    user_params.except :password
+    user_params.except :password, :email
   end
 end

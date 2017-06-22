@@ -119,11 +119,9 @@ RSpec.describe UsersController, type: :controller do
 
     it 'updates the user with the new values' do
       sign_in_as valid_user
-      patch :update, params: { email: 'new@mail.com', first_name: 'new', last_name: 'name' }
+      patch :update, params: { first_name: 'new', last_name: 'name' }
 
-      valid_user.reload
       expect(response).to have_http_status(200)
-      expect(valid_user.email).to eq('new@mail.com')
       expect(valid_user.first_name).to eq('new')
       expect(valid_user.last_name).to eq('name')
     end
@@ -133,16 +131,22 @@ RSpec.describe UsersController, type: :controller do
 
       expect {
         patch :update, params: { password: 'my new password' }
-        valid_user.reload
       }.to_not change { valid_user.password_digest }
+    end
+
+    it 'doesn\'t allow a user to update their email' do
+      sign_in_as valid_user
+      expect {
+        patch :update, params: { email: 'new@mail.com' }
+      }.to_not change { valid_user.email }
     end
 
     it 'returns a 422 if provided invalid values' do
       sign_in_as valid_user
-      patch :update, params: { email: 'invalid.com', first_name: 'new', last_name: 'name' }
+      allow_any_instance_of(User).to receive(:save).and_return(false)
 
+      patch :update, params: { first_name: 'invalid' }
       expect(response).to have_http_status(422)
-      expect(json[:errors][:email]).to eq(['is invalid'])
     end
   end
 
