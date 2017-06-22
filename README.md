@@ -171,6 +171,26 @@ Content-Type: application/json
 }
 ```
 
+### Password reset
+#### `POST /password_resets`
+
+Generate a password reset token for a user. This will send an email to the user with a link to reset their password via the generated token.
+
+##### Example request
+```http
+POST /password_resets HTTP/1.1
+Content-Type: application/json
+
+{
+  "email": "bob@falcon.com"
+}
+```
+
+##### Example response
+```http
+HTTP/1.1 201 Created
+```
+
 ### Birds
 #### `POST /birds`
 

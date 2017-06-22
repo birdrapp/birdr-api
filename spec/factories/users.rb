@@ -3,6 +3,7 @@ FactoryGirl.define do
     first_name { Faker::Name.first_name }
     last_name { Faker::Name.last_name }
     email { Faker::Internet.unique.email }
+    password_reset_token { Faker::Crypto.md5 }
     password { Faker::Lorem.characters(6) }
 
     trait :invalid_email do

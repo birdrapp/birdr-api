@@ -7,4 +7,5 @@ Rails.application.routes.draw do
 
   resources :birds, only: [:create]
   resources :tokens, only: [:create]
+  resources :password_resets, only: [:create, :update]
 end

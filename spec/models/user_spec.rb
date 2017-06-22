@@ -34,4 +34,46 @@ RSpec.describe User, type: :model do
     it { should have_secure_password }
     it { should validate_length_of(:password).is_at_least(6) }
   end
+
+  describe "instance methods" do
+    describe "#generate_password_reset_token" do
+      let(:user) { FactoryGirl.create :user }
+
+      it "sets the password_reset_token attribute" do
+        expect(SecureRandom).to receive(:urlsafe_base64).and_return('my_token')
+
+        user.password_reset_token = nil
+        expect(user.password_reset_token).to be_nil
+        user.generate_password_reset_token
+        expect(user.password_reset_token).to eq 'my_token'
+      end
+
+      it "sets the password_reset_digest attribute" do
+        expect {
+          user.generate_password_reset_token
+        }.to change { user.password_reset_digest }
+        expect(user.password_reset_digest).to_not be_nil
+      end
+
+      it "sets the password_reset_sent_at attribute" do
+        time = Time.local(2017, 6, 22, 21, 13, 0)
+        travel_to time do
+          user.generate_password_reset_token
+          expect(user.password_reset_sent_at).to eq time
+        end
+      end
+    end
+
+    describe "#send_password_reset_email" do
+      it "sends the password_reset mail for the user" do
+        user = FactoryGirl.create :user
+        mailer = double("UserMailer")
+
+        expect(UserMailer).to receive(:password_reset).with(user).and_return(mailer)
+        expect(mailer).to receive(:deliver_now)
+
+        user.send_password_reset_email
+      end
+    end
+  end
 end
