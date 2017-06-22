@@ -36,6 +36,23 @@ RSpec.describe User, type: :model do
   end
 
   describe "instance methods" do
+    describe "#authenticated?" do
+      it "returns true when passed a valid password_reset_token" do
+        user = FactoryGirl.create :user
+        user.generate_password_reset_token
+        token = user.password_reset_token
+
+        expect(user.authenticated? token).to be_truthy
+      end
+
+      it "returns false when passed an invalid password_reset_token" do
+        user = FactoryGirl.create :user
+        user.generate_password_reset_token
+
+        expect(user.authenticated? "nope").to be_falsy
+      end
+    end
+
     describe "#generate_password_reset_token" do
       let(:user) { FactoryGirl.create :user }
 
