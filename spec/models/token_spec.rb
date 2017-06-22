@@ -13,11 +13,11 @@ RSpec.describe Token, type: :model do
   end
 
   describe 'defaults' do
-    it 'defaults to 30 days expiry' do
+    it 'defaults to 90 days expiry' do
       time = Time.local(2017, 6, 22, 7, 30, 0)
       travel_to time do
         token = Token.new
-        expect(token.expires_at).to eq time + 30.days
+        expect(token.expires_at).to eq time + 90.days
       end
     end
   end
