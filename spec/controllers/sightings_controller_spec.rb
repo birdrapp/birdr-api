@@ -38,6 +38,8 @@ RSpec.describe SightingsController, type: :controller do
       it "returns the sighting in the response" do
         post :create, params: { bird_id: bird.id }
 
+        expect(json[:id]).to eq Sighting.last.id
+
         expect(json[:bird][:id]).to eq bird.id
         expect(json[:bird][:common_name]).to eq bird.common_name
 

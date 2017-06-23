@@ -5,8 +5,10 @@ Rails.application.routes.draw do
   patch '/user',  controller: :users, action: :update
   put '/user',    controller: :users, action: :update
 
+  post '/password/reset', controller: :passwords, action: :create_reset_token
+  patch '/password',      controller: :passwords, action: :update
+
   resources :birds, only: [:create]
   resources :tokens, only: [:create]
-  resources :password_resets, only: [:create, :update]
   resources :sightings, only: [:create, :destroy]
 end

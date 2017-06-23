@@ -1,10 +1,11 @@
-class PasswordResetsController < ApplicationController
+class PasswordsController < ApplicationController
   skip_before_action :authenticate!
+
   before_action :get_user
-  before_action :valid_user, only: :update
+  before_action :validate_user, only: :update
   before_action :check_expiration, only: :update
 
-  def create
+  def create_reset_token
     if @user
       @user.generate_password_reset_token
       @user.send_password_reset_email
@@ -15,10 +16,10 @@ class PasswordResetsController < ApplicationController
   end
 
   def update
-    if params[:password].empty?
+    if params[:new_password].blank?
       @user.errors.add(:password, "can't be empty")
       render json: { errors: @user.errors.messages }, status: 422
-    elsif @user.update_attributes({ password: params[:password] })
+    elsif @user.update_attributes({ password: params[:new_password] })
       @user.tokens.destroy_all
       @user.update_attribute(:password_reset_digest, nil)
       head 200
@@ -33,8 +34,8 @@ class PasswordResetsController < ApplicationController
     @user = User.find_by(email: params[:email].downcase)
   end
 
-  def valid_user
-    unless (@user && @user.authenticated?(params[:id]))
+  def validate_user
+    unless @user && @user.authenticated?(params[:password_reset_token])
       return head 401
     end
   end
