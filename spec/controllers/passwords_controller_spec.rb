@@ -90,7 +90,7 @@ RSpec.describe PasswordsController, type: :controller do
         params[:new_password] = 'short'
         patch :update, params: params
         expect(response).to have_http_status(422)
-        expect(json[:errors][:password]).to eq ["is too short (minimum is 6 characters)"]
+        expect(json[:errors][:password]).to include "is too short (minimum is 6 characters)"
       end
 
       it "changes the user's password" do

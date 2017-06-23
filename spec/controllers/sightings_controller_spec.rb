@@ -24,7 +24,7 @@ RSpec.describe SightingsController, type: :controller do
       it "returns a 422 if an invalid bird_id is sent" do
         post :create, params: { bird_id: '422' }
         expect(response).to have_http_status(422)
-        expect(json[:errors][:bird_id]).to eq ['can\'t be blank']
+        expect(json[:errors][:bird_id]).to include "can't be blank"
       end
 
       it "creates a sighting and returns 201" do
@@ -54,7 +54,7 @@ RSpec.describe SightingsController, type: :controller do
 
         post :create, params: { bird_id: bird.id }
         expect(response).to have_http_status 422
-        expect(json[:errors][:bird_id]).to eq ['bird already recorded']
+        expect(json[:errors][:bird_id]).to include 'bird already recorded'
       end
     end
   end

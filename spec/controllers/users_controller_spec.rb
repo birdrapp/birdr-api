@@ -74,7 +74,7 @@ RSpec.describe UsersController, type: :controller do
 
         expect(response).to have_http_status(422)
 
-        expect(json[:errors][:email]).to include('is invalid')
+        expect(json[:errors][:email]).to include 'is invalid'
       end
     end
 
