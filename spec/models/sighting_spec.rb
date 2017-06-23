@@ -13,7 +13,10 @@ RSpec.describe Sighting, type: :model do
   end
 
   describe "validations" do
+    subject { FactoryGirl.create :sighting }
+
     it { should validate_presence_of :user_id }
     it { should validate_presence_of :bird_id }
+    it { should validate_uniqueness_of(:bird_id).case_insensitive.scoped_to(:user_id).with_message("bird already recorded") }
   end
 end

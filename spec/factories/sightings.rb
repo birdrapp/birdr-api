@@ -1,6 +1,6 @@
 FactoryGirl.define do
   factory :sighting do
-    bird nil
-    user nil
+    bird
+    user
   end
 end

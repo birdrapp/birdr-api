@@ -54,7 +54,7 @@ RSpec.describe SightingsController, type: :controller do
 
         post :create, params: { bird_id: bird.id }
         expect(response).to have_http_status 422
-        expect(json[:errors][:bird_id]).to eq ['bird already in list of sightings']
+        expect(json[:errors][:bird_id]).to eq ['bird already recorded']
       end
     end
   end
