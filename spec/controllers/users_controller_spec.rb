@@ -105,7 +105,7 @@ RSpec.describe UsersController, type: :controller do
       sign_in_as user
       expect {
         delete :destroy
-      }.to change { user.tokens.count }.from(1).to(0)
+      }.to change { user.tokens.count }.to(0)
     end
   end
 
@@ -122,6 +122,7 @@ RSpec.describe UsersController, type: :controller do
       patch :update, params: { first_name: 'new', last_name: 'name' }
 
       expect(response).to have_http_status(200)
+      valid_user.reload
       expect(valid_user.first_name).to eq('new')
       expect(valid_user.last_name).to eq('name')
     end
@@ -143,9 +144,8 @@ RSpec.describe UsersController, type: :controller do
 
     it 'returns a 422 if provided invalid values' do
       sign_in_as valid_user
-      allow_any_instance_of(User).to receive(:save).and_return(false)
 
-      patch :update, params: { first_name: 'invalid' }
+      patch :update, params: { first_name: nil }
       expect(response).to have_http_status(422)
     end
   end

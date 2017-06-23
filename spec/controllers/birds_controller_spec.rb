@@ -33,28 +33,26 @@ RSpec.describe BirdsController, type: :controller do
     end
 
     describe 'failures' do
+      let (:invalid_bird_params) { FactoryGirl.attributes_for :bird, :invalid }
+
       before :each do
-        allow_any_instance_of(Bird).to receive(:save).and_return(false)
         sign_in
       end
 
       it 'does not save an invalid bird into the database' do
         expect {
-          post :create, params: bird_params
+          post :create, params: invalid_bird_params
         }.to_not change { Bird.count }
       end
 
       it 'returns a 422 for an invalid bird' do
-        post :create, params: bird_params
+        post :create, params: invalid_bird_params
         expect(response).to have_http_status 422
       end
 
       it 'returns a list of errors' do
-        expected_errors = { first_name: ['is invalid'] }
-        allow_any_instance_of(Bird).to receive(:errors).and_return(expected_errors)
-
-        post :create, params: bird_params
-        expect(json[:errors]).to eq expected_errors
+        post :create, params: invalid_bird_params
+        expect(json[:errors][:common_name]).to include "can't be blank"
       end
     end
   end
