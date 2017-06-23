@@ -14,6 +14,7 @@ class User < ApplicationRecord
                          format: { with: /.+@.+\..+/ }
 
   has_many :tokens, dependent: :destroy
+  has_many :sightings, dependent: :destroy
 
   def User.digest(string)
     cost = ActiveModel::SecurePassword.min_cost ? BCrypt::Engine::MIN_COST : BCrypt::Engine.cost

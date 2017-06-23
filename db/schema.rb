@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170622184935) do
+ActiveRecord::Schema.define(version: 20170623062032) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -26,8 +26,18 @@ ActiveRecord::Schema.define(version: 20170622184935) do
     t.index ["sort_order"], name: "index_birds_on_sort_order", unique: true
   end
 
+  create_table "sightings", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "bird_id", null: false
+    t.uuid "user_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["bird_id"], name: "index_sightings_on_bird_id"
+    t.index ["user_id", "bird_id"], name: "index_sightings_on_user_id_and_bird_id", unique: true
+    t.index ["user_id"], name: "index_sightings_on_user_id"
+  end
+
   create_table "tokens", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.uuid "user_id"
+    t.uuid "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.datetime "expires_at", null: false
@@ -46,5 +56,7 @@ ActiveRecord::Schema.define(version: 20170622184935) do
     t.index ["email"], name: "index_users_on_email", unique: true
   end
 
+  add_foreign_key "sightings", "birds"
+  add_foreign_key "sightings", "users"
   add_foreign_key "tokens", "users"
 end

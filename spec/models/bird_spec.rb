@@ -6,6 +6,10 @@ RSpec.describe Bird, type: :model do
     it { should have_db_index(:sort_order).unique(true) }
   end
 
+    describe 'relationships' do
+    it { should have_many(:sightings).dependent(:destroy) }
+  end
+
   describe "validations" do
     subject { FactoryGirl.build :bird }
 

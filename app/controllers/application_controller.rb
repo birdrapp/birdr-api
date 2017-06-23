@@ -1,6 +1,8 @@
 class ApplicationController < ActionController::API
   include ActionController::HttpAuthentication::Token::ControllerMethods
 
+  rescue_from ActiveRecord::RecordNotFound, with: :not_found
+
   before_action :authenticate!
 
   def authenticate!
@@ -19,5 +21,9 @@ class ApplicationController < ActionController::API
       token = Token.unexpired.find_by(id: token)
       @_current_user = token.user unless token.nil?
     end
+  end
+
+  def not_found
+    head 404
   end
 end
