@@ -1,5 +1,5 @@
 class Token < ApplicationRecord
-  attribute :expires_at, default: -> { Time.now + 90.days }
+  attribute :expires_at, type: :datetime, default: -> { Time.now + 90.days }
 
   validates :user_id, presence: true
   validates :expires_at, presence: true
