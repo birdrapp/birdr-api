@@ -12,7 +12,7 @@ RSpec.describe PasswordsController, type: :controller do
       let (:user) { FactoryGirl.create :user }
 
       before :each do
-        expect(User).to receive(:find_by).with({ email: user.email.downcase }).and_return(user)
+        expect(User).to receive(:find_by_email).with(user.email).and_return(user)
         allow(user).to receive(:generate_password_reset_token)
         allow(user).to receive(:send_password_reset_email)
       end
@@ -23,7 +23,7 @@ RSpec.describe PasswordsController, type: :controller do
       end
 
       it "ignores the case of the email address" do
-        post :create_reset_token, params: { email: user.email.upcase }
+        post :create_reset_token, params: { email: user.email }
         expect(response).to have_http_status(201)
       end
 
@@ -51,7 +51,7 @@ RSpec.describe PasswordsController, type: :controller do
     end
 
     it "returns a 401 with an expired reset token" do
-      expect(User).to receive(:find_by).with({ email: user.email }).and_return(user)
+      expect(User).to receive(:find_by_email).with(user.email).and_return(user)
       expect(user).to receive(:authenticated?).and_return(true)
       expect(user).to receive(:password_reset_token_expired?).and_return(true)
 
@@ -61,7 +61,7 @@ RSpec.describe PasswordsController, type: :controller do
 
     it "returns a 401 for an invalid reset token" do
       params[:password_reset_token] = 'invalid'
-      expect(User).to receive(:find_by).with({ email: user.email }).and_return(user)
+      expect(User).to receive(:find_by_email).with(user.email).and_return(user)
       expect(user).to receive(:authenticated?).and_return(false)
 
       patch :update, params: params
@@ -70,7 +70,7 @@ RSpec.describe PasswordsController, type: :controller do
 
     describe "valid password reset" do
       before :each do
-        expect(User).to receive(:find_by).with({ email: user.email }).and_return(user)
+        expect(User).to receive(:find_by_email).and_return(user)
         expect(user).to receive(:password_reset_token_expired?).and_return(false)
         expect(user).to receive(:authenticated?).and_return(true)
       end

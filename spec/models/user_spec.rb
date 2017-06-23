@@ -94,4 +94,20 @@ RSpec.describe User, type: :model do
       end
     end
   end
+
+  describe "class methods" do
+    describe ".find_by_email" do
+      before :each do
+        @user = FactoryGirl.create :user
+      end
+
+      it "finds a user by email" do
+        expect(User.find_by_email(@user.email)).to eq @user
+      end
+
+      it "ignores case" do
+        expect(User.find_by_email(@user.email.upcase)).to eq @user
+      end
+    end
+  end
 end

@@ -21,6 +21,10 @@ class User < ApplicationRecord
     BCrypt::Password.create(string, cost: cost)
   end
 
+  def User.find_by_email(email)
+    find_by(email: email.downcase)
+  end
+
   def authenticated?(token)
     BCrypt::Password.new(password_reset_digest).is_password?(token)
   end

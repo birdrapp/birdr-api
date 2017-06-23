@@ -31,7 +31,7 @@ class PasswordsController < ApplicationController
   private
 
   def get_user
-    @user = User.find_by(email: params[:email].downcase)
+    @user = User.find_by_email(params[:email])
   end
 
   def validate_user
