@@ -3,7 +3,7 @@ class ApplicationController < ActionController::API
 
   rescue_from ActiveRecord::RecordNotFound, with: :not_found
 
-  before_action :authenticate!
+  before_action :authenticate!, :set_default_format
 
   def authenticate!
     return true if authenticate_token
@@ -25,5 +25,9 @@ class ApplicationController < ActionController::API
 
   def not_found
     head 404
+  end
+
+  def set_default_format
+    request.format = :json unless params[:format]
   end
 end

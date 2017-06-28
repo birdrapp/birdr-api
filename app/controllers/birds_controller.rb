@@ -1,11 +1,12 @@
 class BirdsController < ApplicationController
-  def create
-    bird = Bird.new bird_params
 
-    if bird.save
-      render json: bird, status: 201
+  def create
+    @bird = Bird.new bird_params
+
+    if @bird.save
+      render status: 201
     else
-      render json: { errors: bird.errors }, status: 422
+      render json: { errors: @bird.errors }, status: 422
     end
   end
 
@@ -14,4 +15,5 @@ class BirdsController < ApplicationController
   def bird_params
     params.permit(:common_name, :scientific_name, :sort_order)
   end
+
 end

@@ -5,14 +5,15 @@ class UsersController < ApplicationController
     @user = User.new user_params
 
     if @user.save
-      render json: @user, status: 201
+      render status: 201
     else
       render json: { errors: @user.errors }, status: 422
     end
   end
 
   def show
-    render json: current_user
+    @user = current_user
+    render status: 200
   end
 
   def destroy
@@ -20,10 +21,11 @@ class UsersController < ApplicationController
   end
 
   def update
-    if current_user.update_attributes(user_params_without_password)
-      render json: current_user
+    @user = current_user
+    if @user.update_attributes(user_params_without_password)
+      render status: 200
     else
-      render json: { errors: current_user.errors }, status: 422
+      render json: { errors: @user.errors }, status: 422
     end
   end
 
