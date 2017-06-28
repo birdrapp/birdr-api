@@ -24,10 +24,10 @@ RSpec.describe "Birds", type: :request do
         post "/birds", params: json_params(bird_params), headers: { "Authorization": "Bearer #{token_for(user)}", "Content-Type": "application/json" }
 
         expect(response).to have_http_status(:created)
-        expect(json.keys).to eq [:id, :commonName, :scientificName]
-        expect(json[:id]).to eq Bird.last.id
-        expect(json[:commonName]).to eq bird_params[:common_name]
-        expect(json[:scientificName]).to eq bird_params[:scientific_name]
+        expect(json_body.keys).to eq [:id, :commonName, :scientificName]
+        expect(json_body[:id]).to eq Bird.last.id
+        expect(json_body[:commonName]).to eq bird_params[:common_name]
+        expect(json_body[:scientificName]).to eq bird_params[:scientific_name]
       end
 
       context "invalid bird" do
@@ -42,7 +42,7 @@ RSpec.describe "Birds", type: :request do
         it "returns a list of errors" do
           post "/birds", params: json_params(invalid_bird_params), headers: { "Authorization": "Bearer #{token_for(user)}", "Content-Type": "application/json" }
           expect(response).to have_http_status(:unprocessable_entity)
-          expect(json[:errors][:common_name]).to include "can't be blank"
+          expect(json_body[:errors][:common_name]).to include "can't be blank"
         end
       end
     end

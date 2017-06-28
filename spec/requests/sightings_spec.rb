@@ -24,9 +24,9 @@ RSpec.describe "Sightings", type: :request do
 
         expect(response).to have_http_status(:created)
 
-        expect(json[:id]).to eq Sighting.last.id
-        expect(json[:bird][:id]).to eq bird.id
-        expect(json[:user][:id]).to eq user.id
+        expect(json_body[:id]).to eq Sighting.last.id
+        expect(json_body[:bird][:id]).to eq bird.id
+        expect(json_body[:user][:id]).to eq user.id
       end
       context "invalid requests" do
         it "returns a 422 when missing a bird_id" do

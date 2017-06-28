@@ -16,9 +16,9 @@ RSpec.describe "Users", type: :request do
         get "/user", headers: { "Authorization": "Bearer #{token_for(user)}", "Content-Type": "application/json" }
 
         expect(response).to have_http_status(:success)
-        expect(json[:firstName]).to eq(user.first_name)
-        expect(json[:lastName]).to eq(user.last_name)
-        expect(json[:email]).to eq(user.email)
+        expect(json_body[:firstName]).to eq(user.first_name)
+        expect(json_body[:lastName]).to eq(user.last_name)
+        expect(json_body[:email]).to eq(user.email)
       end
     end
   end
@@ -39,11 +39,11 @@ RSpec.describe "Users", type: :request do
 
       expect(response).to have_http_status(:created)
 
-      expect(json.keys).to eq [:id, :firstName, :lastName, :email]
-      expect(json[:firstName]).to eq user_params[:first_name]
-      expect(json[:lastName]).to eq user_params[:last_name]
-      expect(json[:email]).to eq user_params[:email]
-      expect(json[:id]).to eq User.last.id
+      expect(json_body.keys).to eq [:id, :firstName, :lastName, :email]
+      expect(json_body[:firstName]).to eq user_params[:first_name]
+      expect(json_body[:lastName]).to eq user_params[:last_name]
+      expect(json_body[:email]).to eq user_params[:email]
+      expect(json_body[:id]).to eq User.last.id
     end
 
     it "does not return the password in the response" do
@@ -51,8 +51,8 @@ RSpec.describe "Users", type: :request do
 
       expect(response).to have_http_status(:created)
 
-      expect(json[:password]).to be nil
-      expect(json[:password_digest]).to be nil
+      expect(json_body[:password]).to be nil
+      expect(json_body[:password_digest]).to be nil
     end
 
     context "failure scenarios" do
@@ -75,7 +75,7 @@ RSpec.describe "Users", type: :request do
 
         expect(response).to have_http_status(:unprocessable_entity)
 
-        expect(json[:errors][:email]).to include "is invalid"
+        expect(json_body[:errors][:email]).to include "is invalid"
       end
     end
   end

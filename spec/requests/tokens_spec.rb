@@ -16,7 +16,7 @@ RSpec.describe "Tokens", type: :request do
       it "returns a formatted error" do
         post "/tokens", params: { email: user.email }
         expect(response).to have_http_status(:unauthorized)
-        expect(json[:errors][:account]).to eq "Unauthorized"
+        expect(json_body[:errors][:account]).to eq "Unauthorized"
       end
     end
 
@@ -39,7 +39,7 @@ RSpec.describe "Tokens", type: :request do
         post "/tokens", params: { email: user.email, password: user.password }
         token = Token.last
 
-        expect(json[:token]).to eq token.id
+        expect(json_body[:token]).to eq token.id
       end
     end
   end

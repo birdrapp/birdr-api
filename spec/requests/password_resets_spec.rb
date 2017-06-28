@@ -77,7 +77,7 @@ RSpec.describe "Password Resets", type: :request do
         @params[:new_password] = 'short'
         patch "/password_resets/#{user.password_reset_token}", params: @params
         expect(response).to have_http_status(:unprocessable_entity)
-        expect(json[:errors][:password]).to include /too short/
+        expect(json_body[:errors][:password]).to include /too short/
       end
 
       it "changes the user's password" do
