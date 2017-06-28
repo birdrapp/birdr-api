@@ -11,17 +11,17 @@ RSpec.describe "Birds", type: :request do
 
     context "authenticated users" do
       let (:user) { FactoryGirl.create :user }
-      let (:bird_params) { FactoryGirl.attributes_for :bird }
+      let (:bird_params) { FactoryGirl.attributes_for(:bird) }
 
       it "saves the bird in the database" do
         expect {
-          post "/birds", params: bird_params, headers: auth_headers(user)
+          post "/birds", params: json_params(bird_params), headers: { "Authorization": "Bearer #{token_for(user)}", "Content-Type": "application/json"  }
         }.to change { Bird.count }.from(0).to(1)
 
         expect(response).to have_http_status(:created)
       end
       it "returns the bird in the response" do
-        post "/birds", params: bird_params, headers: auth_headers(user)
+        post "/birds", params: json_params(bird_params), headers: { "Authorization": "Bearer #{token_for(user)}", "Content-Type": "application/json" }
 
         expect(response).to have_http_status(:created)
         expect(json.keys).to eq [:id, :commonName, :scientificName]
@@ -34,13 +34,13 @@ RSpec.describe "Birds", type: :request do
         let (:invalid_bird_params) { FactoryGirl.attributes_for :bird, :invalid }
         it "doesn't save to the database" do
           expect {
-            post "/birds", params: invalid_bird_params, headers: auth_headers(user)
+            post "/birds", params: json_params(invalid_bird_params), headers: { "Authorization": "Bearer #{token_for(user)}", "Content-Type": "application/json" }
           }.to_not change { Bird.count }.from(0)
           expect(response).to have_http_status(:unprocessable_entity)
         end
 
         it "returns a list of errors" do
-          post "/birds", params: invalid_bird_params, headers: auth_headers(user)
+          post "/birds", params: json_params(invalid_bird_params), headers: { "Authorization": "Bearer #{token_for(user)}", "Content-Type": "application/json" }
           expect(response).to have_http_status(:unprocessable_entity)
           expect(json[:errors][:common_name]).to include "can't be blank"
         end

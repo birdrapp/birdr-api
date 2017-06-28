@@ -17,7 +17,7 @@ RSpec.describe "Bird Lists", type: :request do
       end
 
       it "returns a list of all birds" do
-        get "/user/bird_list", headers: auth_headers(user)
+        get "/user/bird_list", headers: { "Authorization": "Bearer #{token_for(user)}", "Content-Type": "application/json" }
         expect(response).to have_http_status(:success)
         expect(json.length).to eq Bird.count
         returned_ids = json.map { |item| item[:bird][:id] }
@@ -30,7 +30,7 @@ RSpec.describe "Bird Lists", type: :request do
         seen_birds.each { |bird| user.sightings.create bird_id: bird.id }
         seen_bird_ids = seen_birds.pluck(:id)
 
-        get "/user/bird_list", headers: auth_headers(user)
+        get "/user/bird_list", headers: { "Authorization": "Bearer #{token_for(user)}", "Content-Type": "application/json" }
 
         expect(response).to have_http_status(:success)
 

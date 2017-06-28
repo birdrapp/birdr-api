@@ -13,7 +13,7 @@ RSpec.describe "Users", type: :request do
       it "returns the user's profile" do
         user = FactoryGirl.create :user
 
-        get "/user", headers: auth_headers(user)
+        get "/user", headers: { "Authorization": "Bearer #{token_for(user)}", "Content-Type": "application/json" }
 
         expect(response).to have_http_status(:success)
         expect(json[:firstName]).to eq(user.first_name)
@@ -28,14 +28,14 @@ RSpec.describe "Users", type: :request do
 
     it "saves the user in the database" do
       expect {
-        post "/users", params: user_params
+        post "/users", params: json_params(user_params), headers: { "Content-Type": "application/json" }
       }.to change { User.count }.from(0).to(1)
 
       expect(response).to have_http_status(:created)
     end
 
     it "returns the new user in the response" do
-      post "/users", params: user_params
+      post "/users", params: json_params(user_params), headers: { "Content-Type": "application/json" }
 
       expect(response).to have_http_status(:created)
 
@@ -47,7 +47,7 @@ RSpec.describe "Users", type: :request do
     end
 
     it "does not return the password in the response" do
-      post "/users", params: user_params
+      post "/users", params: json_params(user_params), headers: { "Content-Type": "application/json" }
 
       expect(response).to have_http_status(:created)
 
@@ -60,18 +60,18 @@ RSpec.describe "Users", type: :request do
 
       it "does not save an invalid user to the database" do
         expect {
-          post "/users", params: invalid_params
+          post "/users", params: json_params(invalid_params), headers: { "Content-Type": "application/json" }
         }.to_not change { User.count }
       end
 
       it "returns a 422 for an invalid user" do
-        post "/users", params: invalid_params
+        post "/users", params: json_params(invalid_params), headers: { "Content-Type": "application/json" }
 
         expect(response).to have_http_status(:unprocessable_entity)
       end
 
       it "returns a list of errors in the response" do
-        post "/users", params: invalid_params
+        post "/users", params: json_params(invalid_params), headers: { "Content-Type": "application/json" }
 
         expect(response).to have_http_status(:unprocessable_entity)
 
@@ -83,7 +83,7 @@ RSpec.describe "Users", type: :request do
   describe "DELETE /user" do
     context "unauthenticated users" do
       it "returns a 401" do
-        delete "/user"
+        delete "/user", headers: { "Content-Type": "application/json" }
         expect(response).to have_http_status(:unauthorized)
       end
     end
@@ -92,7 +92,7 @@ RSpec.describe "Users", type: :request do
       it "deletes the user" do
         user = FactoryGirl.create :user
         expect {
-          delete "/user", headers: auth_headers(user)
+          delete "/user", headers: { "Authorization": "Bearer #{token_for(user)}", "Content-Type": "application/json" }
         }.to change { User.count }.from(1).to(0)
 
         expect(User.find_by(id: user.id)).to be nil
@@ -104,7 +104,7 @@ RSpec.describe "Users", type: :request do
         user.tokens.create
 
         expect {
-          delete "/user", headers: auth_headers(user)
+          delete "/user", headers: { "Authorization": "Bearer #{token_for(user)}", "Content-Type": "application/json" }
         }.to change { user.tokens.count }.from(1).to(0)
 
         expect(response).to have_http_status(:no_content)
@@ -115,7 +115,7 @@ RSpec.describe "Users", type: :request do
   describe "PATCH /user" do
     context "unauthenticated users" do
       it "returns a 401" do
-        patch "/user"
+        patch "/user", headers: { "Content-Type": "application/json" }
         expect(response).to have_http_status(:unauthorized)
       end
     end
@@ -124,7 +124,7 @@ RSpec.describe "Users", type: :request do
       let (:user) { FactoryGirl.create :user }
 
       it "updates the user with new values" do
-        patch "/user", params: {first_name: "new", last_name: "name"}, headers: auth_headers(user)
+        patch "/user", params: json_params({ first_name: "new", last_name: "name" }), headers: { "Authorization": "Bearer #{token_for(user)}", "Content-Type": "application/json" }
 
         expect(response).to have_http_status(:success)
         user.reload
@@ -134,20 +134,20 @@ RSpec.describe "Users", type: :request do
 
       it "doesn't allow a user to update their password" do
         expect {
-          patch "/user", params: {password: "something_new"}, headers: auth_headers(user)
+          patch "/user", params: json_params({ password: "something_new" }), headers: { "Authorization": "Bearer #{token_for(user)}", "Content-Type": "application/json" }
           user.reload
         }.to_not change { user.password_digest }
       end
 
       it "doesn't allow a user to update their email" do
         expect {
-          patch "/user", params: {email: "new@email.com"}, headers: auth_headers(user)
+          patch "/user", params: json_params({ email: "new@email.com" }), headers: { "Authorization": "Bearer #{token_for(user)}", "Content-Type": "application/json" }
           user.reload
         }.to_not change { user.email }
       end
 
       it "returns a 422 for invalid values" do
-        patch "/user", params: { first_name: nil }, headers: auth_headers(user)
+        patch "/user", params: json_params({ first_name: nil }), headers: { "Authorization": "Bearer #{token_for(user)}", "Content-Type": "application/json" }
 
         expect(response).to have_http_status(:unprocessable_entity)
       end
