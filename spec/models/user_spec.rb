@@ -46,6 +46,14 @@ RSpec.describe User, type: :model do
         expect(user.authenticated? token).to be_truthy
       end
 
+      it "returns false when the user has no password_reset_digest" do
+        user = FactoryGirl.create :user
+        user.password_reset_digest = nil
+        token = user.password_reset_token
+
+        expect(user.authenticated? token).to be_falsy
+      end
+
       it "returns false when passed an invalid password_reset_token" do
         user = FactoryGirl.create :user
         user.generate_password_reset_token

@@ -16,8 +16,8 @@ require_relative './support/json_helper'
 #
 # See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
 RSpec.configure do |config|
-  config.include AuthHelper, type: :controller
-  config.include JsonHelper, type: :controller
+  config.include AuthHelper, type: :request
+  config.include JsonHelper, type: :request
   # rspec-expectations config goes here. You can use an alternate
   # assertion/expectation library such as wrong or the stdlib/minitest
   # assertions if you prefer.

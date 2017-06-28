@@ -4,9 +4,9 @@ module AuthHelper
     sign_in_as valid_user
   end
 
-  def sign_in_as(user)
+  def auth_headers(user)
     token = user.tokens.first || user.tokens.create
-    request.headers.merge!({ Authorization: "Token token=#{token}" })
+    { Authorization: "Bearer #{token}" }
   end
 
   private

@@ -29,7 +29,8 @@ RSpec.describe ApplicationController, type: :controller do
     it 'returns a formatted error' do
       request.headers.merge!({ Authorization: 'nope' })
       get :index
-      expect(json[:errors][:account]).to eq('Unauthorized')
+      json = JSON.parse(response.body)
+      expect(json["errors"]["account"]).to eq('Unauthorized')
     end
 
     it 'returns a 200 when a valid token is provided' do

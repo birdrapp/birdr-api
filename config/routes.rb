@@ -6,10 +6,8 @@ Rails.application.routes.draw do
 
   get '/user/bird_list', controller: :bird_lists, action: :show
 
-  post '/password/reset', controller: :passwords, action: :create_reset_token
-  patch '/password',      controller: :passwords, action: :update
-
   resources :birds, only: [:create]
   resources :tokens, only: [:create]
   resources :sightings, only: [:create, :destroy]
+  resources :password_resets, only: [:create, :update]
 end

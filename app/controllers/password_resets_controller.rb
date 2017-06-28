@@ -1,11 +1,11 @@
-class PasswordsController < ApplicationController
+class PasswordResetsController < ApplicationController
   skip_before_action :authenticate!
 
   before_action :get_user
   before_action :validate_user, only: :update
   before_action :check_expiration, only: :update
 
-  def create_reset_token
+  def create
     if @user
       @user.generate_password_reset_token
       @user.send_password_reset_email
@@ -35,7 +35,7 @@ class PasswordsController < ApplicationController
   end
 
   def validate_user
-    unless @user && @user.authenticated?(params[:password_reset_token])
+    unless @user && @user.authenticated?(params[:id])
       return head 401
     end
   end
