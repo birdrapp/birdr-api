@@ -24,10 +24,10 @@ RSpec.describe "Birds", type: :request do
         post "/birds", params: bird_params, headers: auth_headers(user)
 
         expect(response).to have_http_status(:created)
-        expect(json.keys).to eq [:id, :common_name, :scientific_name]
+        expect(json.keys).to eq [:id, :commonName, :scientificName]
         expect(json[:id]).to eq Bird.last.id
-        expect(json[:common_name]).to eq bird_params[:common_name]
-        expect(json[:scientific_name]).to eq bird_params[:scientific_name]
+        expect(json[:commonName]).to eq bird_params[:common_name]
+        expect(json[:scientificName]).to eq bird_params[:scientific_name]
       end
 
       context "invalid bird" do

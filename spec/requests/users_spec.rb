@@ -16,8 +16,8 @@ RSpec.describe "Users", type: :request do
         get "/user", headers: auth_headers(user)
 
         expect(response).to have_http_status(:success)
-        expect(json[:first_name]).to eq(user.first_name)
-        expect(json[:last_name]).to eq(user.last_name)
+        expect(json[:firstName]).to eq(user.first_name)
+        expect(json[:lastName]).to eq(user.last_name)
         expect(json[:email]).to eq(user.email)
       end
     end
@@ -39,9 +39,9 @@ RSpec.describe "Users", type: :request do
 
       expect(response).to have_http_status(:created)
 
-      expect(json.keys).to eq [:id, :first_name, :last_name, :email]
-      expect(json[:first_name]).to eq user_params[:first_name]
-      expect(json[:last_name]).to eq user_params[:last_name]
+      expect(json.keys).to eq [:id, :firstName, :lastName, :email]
+      expect(json[:firstName]).to eq user_params[:first_name]
+      expect(json[:lastName]).to eq user_params[:last_name]
       expect(json[:email]).to eq user_params[:email]
       expect(json[:id]).to eq User.last.id
     end
