@@ -9,7 +9,7 @@ class PasswordResetsController < ApplicationController
     if @user
       @user.generate_password_reset_token
       @user.send_password_reset_email
-      head 201
+      head 204
     else
       head 404
     end

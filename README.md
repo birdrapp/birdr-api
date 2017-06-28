@@ -188,7 +188,7 @@ Content-Type: application/json
 
 ##### Example response
 ```http
-HTTP/1.1 201 Created
+HTTP/1.1 204 No content
 ```
 
 #### `PATCH /password_resets/:password_reset_token`
@@ -202,7 +202,7 @@ PATCH /password_resets/d41d8cd98f00b204e9800998ecf8427e HTTP/1.1
 Content-Type: application/json
 
 {
-  "email": "bob@falcon.com"
+  "email": "bob@falcon.com",
   "password": "new_password"
 }
 ```

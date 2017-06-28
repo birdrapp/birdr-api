@@ -14,12 +14,12 @@ RSpec.describe "Password Resets", type: :request do
         post "/password_resets", params: { email: user.email }
         user.reload
       }.to change(user, :password_reset_digest)
-      expect(response).to have_http_status(:created)
+      expect(response).to have_http_status(:no_content)
     end
 
     it "ignores case on email" do
       post "/password_resets", params: { email: user.email.upcase }
-      expect(response).to have_http_status(:created)
+      expect(response).to have_http_status(:no_content)
     end
 
     it "sends a password reset email to the user" do
