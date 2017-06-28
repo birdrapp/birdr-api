@@ -5,10 +5,10 @@
 This API is built using Ruby on Rails (5.1). To get setup you will first need to ensure you have the latest version of Ruby installed (2.4.1+), as well as the [bundler gem](http://bundler.io/):
 
 ```bash
-brew install ruby@2.3
+brew install ruby
 ```
 
-Follow the instructions to put Ruby 2.3 in your PATH. You then need to install bundler and all the dependencies:
+You then need to install bundler and all the dependencies:
 
 ```bash
 gem install bundler
@@ -55,8 +55,8 @@ POST /users HTTP/1.1
 Content-Type: application/json
 
 {
-  "first_name": "Matthew",
-  "last_name": "Williams",
+  "firstName": "Matthew",
+  "lastName": "Williams",
   "email": "matt@williams.com",
   "password": "secret"
 }
@@ -70,8 +70,8 @@ Content-Type: application/json
 
 {
   "id": "2397c038-fd20-11e6-a33e-784f43502296",
-  "first_name": "Matthew",
-  "last_name": "Williams",
+  "firstName": "Matthew",
+  "lastName": "Williams",
   "email": "matt@williams.com"
 }
 ```
@@ -94,8 +94,8 @@ Content-Type: application/json
 
 {
   "id": "2397c038-fd20-11e6-a33e-784f43502296",
-  "first_name": "Matthew",
-  "last_name": "Williams",
+  "firstName": "Matthew",
+  "lastName": "Williams",
   "email": "matt@williams.com"
 }
 ```
@@ -111,7 +111,7 @@ Authorization: Bearer <token>
 Content-Type: application/json
 
 {
-  "first_name": "John"
+  "firstName": "John"
 }
 ```
 
@@ -122,8 +122,8 @@ Content-Type: application/json
 
 {
   "id": "2397c038-fd20-11e6-a33e-784f43502296",
-  "first_name": "John",
-  "last_name": "Williams",
+  "firstName": "John",
+  "lastName": "Williams",
   "email": "matt@williams.com"
 }
 ```
@@ -191,6 +191,28 @@ Content-Type: application/json
 HTTP/1.1 201 Created
 ```
 
+#### `PATCH /password_resets/:password_reset_token`
+
+Update a user's password provided the password reset token is valid.
+
+##### Example request
+
+```http
+PATCH /password_resets/d41d8cd98f00b204e9800998ecf8427e HTTP/1.1
+Content-Type: application/json
+
+{
+  "email": "bob@falcon.com"
+  "password": "new_password"
+}
+```
+
+##### Example response
+
+```http
+HTTP/1.1 204 No content
+```
+
 ### Birds
 #### `POST /birds`
 
@@ -203,8 +225,8 @@ Authorization: Bearer <token>
 Content-Type: application/json
 
 {
-  "common_name": "Robin",
-  "scientific_name": "Erithacus rubecula"
+  "commonName": "Robin",
+  "scientificName": "Erithacus rubecula"
 }
 ```
 
@@ -215,6 +237,95 @@ Content-Type: application/json
 
 {
   "id": "07630030-a00d-4d0a-a360-efccaf95a172",
-  "common_name": "Robin",
-  "scientific_name": "Erithacus rubecula"
+  "commonName": "Robin",
+  "scientificName": "Erithacus rubecula"
 }
+
+### Sightings
+
+#### `POST /sightings`
+
+Record seeing a particular bird
+
+##### Example request
+```http
+POST /sightings HTTP/1.1
+Authorization: Bearer <token>
+Content-Type: application/json
+
+{
+  "bird_id": "07630030-a00d-4d0a-a360-efccaf95a172"
+}
+```
+
+##### Example response
+
+```http
+HTTP/1.1 201 Created
+Content-Type application/json
+
+{
+  "id": "a0918001-6c5d-4cce-95bc-bac08fc24f91",
+  "bird": {
+    "id": "07630030-a00d-4d0a-a360-efccaf95a172",
+    "commonName": "Robin",
+    "scientificName": "Erithacus rubecula"
+  },
+  "user": {
+    "id": "2397c038-fd20-11e6-a33e-784f43502296",
+    "firstName": "Matthew",
+    "lastName": "Williams",
+    "email": "matt@williams.com"
+  }
+}
+```
+
+#### `DELETE /sightings/:id`
+
+Remove a sighting from your bird list
+
+##### Example request
+
+```http
+DELETE /sightings/a0918001-6c5d-4cce-95bc-bac08fc24f91 HTTP/1.1
+Authorization: Bearer <token>
+Content-Type: application/json
+```
+
+##### Example response
+
+```http
+HTTP/1.1 204 No content
+```
+
+### Bird Lists
+
+#### `GET /user/bird_list`
+
+View your bird list. The list includes all birds and whether you have seen them or not.
+
+##### Example request
+```http
+GET /user/bird_list HTTP/1.1
+Authorization: Bearer <token>
+Content-Type: application/json
+```
+
+##### Example response
+
+```http
+HTTP/1.1 200 OK
+Content-Type: application/json
+
+[
+  {
+    "bird": {
+      "id": "07630030-a00d-4d0a-a360-efccaf95a172",
+      "commonName": "Robin",
+      "scientificName": "Erithacus rubecula"
+    },
+    "seen": true
+  }
+  ...
+]
+```

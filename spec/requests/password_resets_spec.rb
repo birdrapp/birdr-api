@@ -38,7 +38,7 @@ RSpec.describe "Password Resets", type: :request do
 
     before :each do
       @params = {
-        new_password: 'supersecret',
+        password: 'supersecret',
         email: user.email
       }
     end
@@ -65,16 +65,16 @@ RSpec.describe "Password Resets", type: :request do
       it "downcases the email" do
         @params[:email] = user.email.upcase
         patch "/password_resets/#{user.password_reset_token}", params: @params
-        expect(response).to have_http_status(:success)
+        expect(response).to have_http_status(:no_content)
       end
       it "returns 422 for a blank password" do
-        @params[:new_password] = '      '
+        @params[:password] = '      '
         patch "/password_resets/#{user.password_reset_token}", params: @params
         expect(response).to have_http_status(:unprocessable_entity)
       end
 
       it "returns 422 for an invalid password" do
-        @params[:new_password] = 'short'
+        @params[:password] = 'short'
         patch "/password_resets/#{user.password_reset_token}", params: @params
         expect(response).to have_http_status(:unprocessable_entity)
         expect(json_body[:errors][:password]).to include /too short/
@@ -85,7 +85,7 @@ RSpec.describe "Password Resets", type: :request do
           patch "/password_resets/#{user.password_reset_token}", params: @params
           user.reload
         }.to change { user.password_digest }
-        expect(response).to have_http_status(:success)
+        expect(response).to have_http_status(:no_content)
       end
 
       it "removes all the user's access tokens" do
@@ -93,12 +93,12 @@ RSpec.describe "Password Resets", type: :request do
         expect {
           patch "/password_resets/#{user.password_reset_token}", params: @params
         }.to change { user.tokens.count }.from(5).to(0)
-        expect(response).to have_http_status(:success)
+        expect(response).to have_http_status(:no_content)
       end
 
       it "cannot reuse the password reset token" do
         patch "/password_resets/#{user.password_reset_token}", params: @params
-        expect(response).to have_http_status(:success)
+        expect(response).to have_http_status(:no_content)
         patch "/password_resets/#{user.password_reset_token}", params: @params
         expect(response).to have_http_status(:unauthorized)
       end

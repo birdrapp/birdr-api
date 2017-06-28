@@ -16,13 +16,13 @@ class PasswordResetsController < ApplicationController
   end
 
   def update
-    if params[:new_password].blank?
+    if params[:password].blank?
       @user.errors.add(:password, "can't be empty")
       render json: { errors: @user.errors.messages }, status: 422
-    elsif @user.update_attributes({ password: params[:new_password] })
+    elsif @user.update_attributes({ password: params[:password] })
       @user.tokens.destroy_all
       @user.update_attribute(:password_reset_digest, nil)
-      head 200
+      head 204
     else
       render json: { errors: @user.errors.messages }, status: 422
     end
