@@ -109,6 +109,18 @@ RSpec.describe "Users", type: :request do
 
         expect(response).to have_http_status(:no_content)
       end
+
+      it "delete's the user's sightings" do
+        user = FactoryGirl.create :user
+        bird = FactoryGirl.create :bird
+        user.sightings.create(bird_id: bird.id)
+
+        expect {
+          delete "/user", headers: { "Authorization": "Bearer #{token_for(user)}", "Content-Type": "application/json" }
+        }.to change { user.sightings.count }.from(1).to(0)
+
+        expect(response).to have_http_status(:no_content)
+      end
     end
   end
 
