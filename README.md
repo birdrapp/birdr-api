@@ -34,9 +34,9 @@ POST /users HTTP/1.1
 Content-Type: application/json
 
 {
-  "firstName": "Matthew",
-  "lastName": "Williams",
-  "email": "matt@williams.com",
+  "firstName": "Bob",
+  "lastName": "Falcon",
+  "email": "bob@falcon.com",
   "password": "secret"
 }
 ```
@@ -49,9 +49,9 @@ Content-Type: application/json
 
 {
   "id": "2397c038-fd20-11e6-a33e-784f43502296",
-  "firstName": "Matthew",
-  "lastName": "Williams",
-  "email": "matt@williams.com"
+  "firstName": "Bob",
+  "lastName": "Falcon",
+  "email": "bob@falcon.com"
 }
 ```
 
@@ -73,9 +73,9 @@ Content-Type: application/json
 
 {
   "id": "2397c038-fd20-11e6-a33e-784f43502296",
-  "firstName": "Matthew",
-  "lastName": "Williams",
-  "email": "matt@williams.com"
+  "firstName": "Bob",
+  "lastName": "Falcon",
+  "email": "bob@falcon.com"
 }
 ```
 
@@ -102,8 +102,8 @@ Content-Type: application/json
 {
   "id": "2397c038-fd20-11e6-a33e-784f43502296",
   "firstName": "John",
-  "lastName": "Williams",
-  "email": "matt@williams.com"
+  "lastName": "Falcon",
+  "email": "bob@falcon.com"
 }
 ```
 
@@ -134,7 +134,7 @@ POST /tokens HTTP/1.1
 Content-Type: application/json
 
 {
-  "email": "matt@williams.com",
+  "email": "bob@falcon.com",
   "password": "secret"
 }
 ```
@@ -252,9 +252,9 @@ Content-Type application/json
   },
   "user": {
     "id": "2397c038-fd20-11e6-a33e-784f43502296",
-    "firstName": "Matthew",
-    "lastName": "Williams",
-    "email": "matt@williams.com"
+    "firstName": "Bob",
+    "lastName": "Falcon",
+    "email": "bob@falcon.com"
   }
 }
 ```
