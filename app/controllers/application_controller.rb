@@ -17,7 +17,7 @@ class ApplicationController < ActionController::API
   private
 
   def authenticate_token
-    authenticate_with_http_token do |token, options|
+    authenticate_with_http_token do |token, _|
       token = Token.unexpired.find_by(id: token)
       @_current_user = token.user unless token.nil?
     end
