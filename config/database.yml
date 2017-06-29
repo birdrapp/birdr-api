@@ -1,18 +1,16 @@
-# Ensure you have a birdr role with login and superuser privileges:
-# CREATE ROLE birdr LOGIN SUPERUSER PASSWORD 'birdr';
+default: &default
+  adapter: postgresql
+  encoding: unicode
+  pool: 5
+  timeout: 5000
+  username: postgres
+  host: postgres
+  port: 5432
 
 development:
-  adapter: postgresql
-  encoding: unicode
+  <<: *default
   database: birdr_dev
-  pool: 5
-  username: birdr
-  password: birdr
 
 test:
-  adapter: postgresql
-  encoding: unicode
+  <<: *default
   database: birdr_test
-  pool: 5
-  username: birdr
-  password: birdr

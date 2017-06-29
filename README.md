@@ -2,44 +2,23 @@
 
 ## Setup
 
-This API is built using Ruby on Rails (5.1). To get setup you will first need to ensure you have the latest version of Ruby installed (2.4.1+), as well as the [bundler gem](http://bundler.io/):
-
-```bash
-brew install ruby
-```
-
-You then need to install bundler and all the dependencies:
-
-```bash
-gem install bundler
-bundle install
-```
-
-The API uses Postgres as a database. If you're on Mac you can use [Postgres.app](https://postgresapp.com/). You will need to crete a role in postgres:
+This API is built using Ruby on Rails (5.2). We use Docker for our development environment. To get up and running:
 
 ```
-psql
-psql # CREATE ROLE birdr LOGIN SUPERUSER PASSWORD 'birdr';
-psql # \q
+docker-compose build
+docker-compose up
 ```
 
 To bring the database inline with production:
 
 ```
-rails db:create
-rails db:migrate
+docker-compose run app rails db:create db:migrate
 ```
 
-Test everything is working:
+To run the tests:
 
 ```
-rails server
-```
-
-Or, run the tests:
-
-```
-rspec
+docker-compose run app rspec
 ```
 
 ## API Documentation
