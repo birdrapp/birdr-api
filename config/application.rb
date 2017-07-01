@@ -33,6 +33,17 @@ module BirdrApi
       g.orm :active_record, primary_key_type: :uuid
     end
 
+
+    # Enable CORS headers
+    # It is important to insert this middleware before Rack::Cache
+    # to ensure correct CORS headers are cached.
+    config.middleware.insert_before 0, Rack::Cors do
+      allow do
+        origins '*'
+        resource '*', :headers => :any, :methods => [:get, :post, :options]
+      end
+    end
+
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration should go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded.
