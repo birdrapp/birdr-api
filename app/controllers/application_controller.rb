@@ -28,6 +28,6 @@ class ApplicationController < ActionController::API
   end
 
   def set_default_format
-    request.format = :json unless params[:format]
+    request.format = :json
   end
 end
