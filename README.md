@@ -146,7 +146,13 @@ HTTP/1.1 201 Created
 Content-Type: application/json
 
 {
-  "token": "07630030-a00d-4d0a-a360-efccaf95a172"
+  "token": "07630030-a00d-4d0a-a360-efccaf95a172",
+  "user": {
+    "id": "2397c038-fd20-11e6-a33e-784f43502296",
+    "firstName": "Bob",
+    "lastName": "Falcon",
+    "email": "bob@falcon.com"
+  }
 }
 ```
 
